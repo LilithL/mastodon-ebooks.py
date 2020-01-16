@@ -1,3 +1,9 @@
+corpus/
+accts.json
+clientcred.secret
+usercred.secret
+model.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
