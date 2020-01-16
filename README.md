@@ -25,3 +25,7 @@ Inspired by original work by Jess: https://github.com/Jess3Jane/mastodon-ebooks
 Alternatively, you can loop indefinitely (reply every 10 seconds, toot and scrape toots every 30 minutes) `./mastodon-ebooks.py -l`
 
 Optionally, you can also run `./mastodon-ebooks.py -r` regularly to check on notifications and reply to mentions.
+
+## login.py
+
+I took the base [login.py](https://gist.github.com/Lana-chan/b0d937968d22eca6dcd79a0524449f1d) and edited it to implement the api base url inside `usercred.secret` so it's now easier to setup the bot without having to edit the base url from the `mastodon-ebooks.py` script.
