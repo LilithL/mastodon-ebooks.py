@@ -51,7 +51,7 @@ def scrape(mastodon):
     print(acctjson)
     for acc in following:
         id = str(acc['id'])
-        print(id)
+        print(id + " " + acc['acct'])
         try:
             since_id = scrape_id(mastodon, id, since=acctjson[id])
         except:
@@ -87,7 +87,7 @@ def scrape_id(mastodon, id, since=None):
     corpusfile = 'corpus/%s.txt' % id
     i = 0
     with open(bufferfile, 'w') as output:
-        while toots is not None and len(toots) > 0:
+        while toots != None and len(toots) > 0:
             # writes current amount of scraped toots without breaking line
             i = i + len(toots)
             sys.stdout.write('\r%d' % i)
@@ -121,7 +121,7 @@ def generate(length=None, seed_msg=''):
     with open(modelfile, 'r') as f:
         reconstituted_model = markovify.Text.from_json(f.read())
     msg = ''
-    if seed_msg is not '':
+    if seed_msg != '':
         word_list = seed_msg.split(' ')
         shuffle(word_list)
         for word in word_list:
@@ -132,7 +132,8 @@ def generate(length=None, seed_msg=''):
                     msg = test
                     break
                 i = i - 1
-            if msg is not '': break
+            if msg != '':
+                break
         if not msg:
             msg = generate_length(reconstituted_model, length)
     else:
@@ -183,7 +184,7 @@ def reply(mastodon):
         rsp = generate(500 - len(mention) - len(status['spoiler_text']), msg)
         toot = '@{} {} {}'.format(acct, mentions, rsp)
         mastodon.status_post(toot, in_reply_to_id=id, visibility=vis, spoiler_text=status['spoiler_text'])
-        mastodon.notifications_clear()
+    mastodon.notifications_clear()
 
 
 def usage():
@@ -198,11 +199,18 @@ def usage():
 def main(argv):
     # init mastodon
     from mastodon import Mastodon
+    usercred = {}
+    try:
+        with open('usercred.secret', 'r') as f:
+            usercred = json.load(f)
+    except:
+        print("No usercred.secret file found")
+        exit()
     mastodon = Mastodon(
         # replace values/files with your own
         client_id='clientcred.secret',
-        access_token='usercred.secret',
-        api_base_url='https://botsin.space'
+        access_token=usercred['token'],
+        api_base_url=usercred['url']
     )
 
     try:
