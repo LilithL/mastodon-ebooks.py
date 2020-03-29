@@ -214,7 +214,7 @@ def main(argv):
     )
 
     try:
-        opts, args = getopt.getopt(argv, "trpsl", ["toot", "reply", "print", "scrape", "loop"])
+        opts, args = getopt.getopt(argv, "trpslc", ["toot", "reply", "print", "scrape", "loop", "clear"])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -236,6 +236,8 @@ def main(argv):
                     time.sleep(10)
                 toot(mastodon)
                 scrape(mastodon)
+        elif opt in ('-c', '--clear'):
+            mastodon.notifications_clear()
 
 
 if __name__ == "__main__":
